@@ -7,19 +7,8 @@ const hasha = require("hasha");
 const docit = require("./docit.js");
 const zlib = require("zlib");
 
-
-// if (!fs.existsSync(DOCIT_DIR)) {
-//   fs.mkdirSync(DOCIT_DIR); //THIS MIGHT BE MADE AUTOMATICALLY
-// }
-
-// const buf = Buffer.from(JSON.stringify({ name: "JEFF" }));
-
-// console.log(JSON.parse(buf.toString()))
-
-// console.log(path.join("C:\Users\monir\test.docx"));
-
-// console.log(path.join(process.argv[2], 'hollo'));
-
+// LOOK FOR ERROR IN ALL FILES
+//TYPESCRIPT
 
 
 // command: docit init C:\Users\monir\test.docx --alias test
@@ -31,7 +20,7 @@ function init(documentPath, alias) {
   alias = alias || path.basename(documentPath, extension).toLowerCase(); // essentially get the name of the file without the extension
   docit.assertProjectAlreadyExists(alias);
 
-  if (!fs.existsSync(documentPath)) {
+  if (!fse.pathExistsSync(documentPath)) {
     fileUtil.writeEmptyDocument(documentPath); //
     console.log(`Created new Word Document at ${documentPath}`);
   }
@@ -41,7 +30,7 @@ function init(documentPath, alias) {
 
 // command: docit open test (uses alias)
 
-async function open(alias) {
+function open(alias) {
   // if opened after init, it should just set the config object directly
   docit.assertNoCurrentWorkingAlias();
   const folderpath = path.join(docit.DOCIT_PATH, alias);
@@ -59,7 +48,7 @@ async function open(alias) {
 //command docit new-version
 //command docit new-version --comments "added new paragraph"
 
-function new_version(comments="") {
+function new_version(comments) {
   docit.assertCurrentWorkingAlias();
   // update version number
   const pastVersion = docit.config.latestVersion || 0.0; //
@@ -85,6 +74,7 @@ function new_version(comments="") {
   };
 
   // get buffer of version object, compress it, and write it to versions file
+  // docit.saveVersionsFile()
   const versionsBuffer = Buffer.from(JSON.stringify(docit.versions));
   const compressedVersionsBuffer = zlib.brotliCompressSync(versionsBuffer);
   fse.writeFileSyncSync(docit.VERSIONS_PATH, compressedVersionsBuffer);
@@ -148,11 +138,44 @@ function move(newDocumentPath) {
   // update the path in the config
   docit.config.documentPath = newDocumentPath;
   // save updated config to config.json
-  docit.saveConfig();
+  docit.saveConfigFile();
   // fse.writeJSONSync(docit.CONFIG_PATH, docit.config);
 }
 
 //command: docit rollback 5
 function rollback(version) {
     // TODO
+    docit.assertCurrentWorkingAlias();
+
+    if (docit.versions[version]) {
+        // get the file from the requested version object
+    const { file_hash } = docit.versions[version];
+
+    // get the compressed buffer from version_files using the hash (the saved compressed file of the version)
+    // this can be turned into seperate functions
+    const compressedBuffer = fse.readFileSync(
+      path.join(docit.PROJECT_PATH, "version_files", file_hash),
+      compressedDocumentBuffer
+    );
+
+    // decompress the buffer
+    const decompressedBuffer = zlib.brotliDecompressSync(compressedBuffer);
+
+    fse.writeFileSync(docit.config.documentPath, decompressedBuffer);
+
+    docit.config.currentVersion = version;
+
+    docit.saveConfigFile();
+
+    console.log(`Successfully rolled back to version ${version}`)
+
+
+
+    } else {
+        throw new Error("Docit: given version does not exist");
+    }
+
+
 }
+
+module.exports = { rollback, move, peek, init, open, new_version, list_versions}

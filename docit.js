@@ -26,7 +26,7 @@ function setCurrentAlias(alias) {
 function getConfig() {
 
   CONFIG_PATH = path.join(PROJECT_PATH, "config.json");
-  config = fse.readJSONSync(config_path);
+  config = fse.readJSONSync(CONFIG_PATH);
   return config;
 }
 
@@ -41,9 +41,15 @@ function getVersions() {
     // set to versions variable
 }
 
-function saveConfig() {
+function saveConfigFile() {
     // not compressing as will remain very small
     fse.writeJSONSync(CONFIG_PATH, config);
+}
+
+function saveVersionsFile() {
+    const versionsBuffer = Buffer.from(JSON.stringify(versions));
+  const compressedVersionsBuffer = zlib.brotliCompressSync(versionsBuffer);
+  fse.writeFileSyncSync(VERSIONS_PATH, compressedVersionsBuffer);
 }
 
 
@@ -64,7 +70,7 @@ function assertNoCurrentWorkingAlias() {
 
 function assertProjectAlreadyExists(alias) {
   const folderpath = path.join(DOCIT_PATH, alias);
-  if (fse.pathExists(folderpath)) {
+  if (fse.pathExistsSync(folderpath)) {
     throw new Error(
       "Docit: Project with same alias already exists. Either rename file or set a different alias"
     );
@@ -85,14 +91,7 @@ function createInitalFiles(documentPath, alias) {
   );
 }
 
-function createVersion(file_hash, comments) {
 
-  return {
-    date: Date.now(),
-    file_hash,
-    comments
-  };
-}
 
 const docit = {
   currentWorkingAlias,
@@ -104,7 +103,8 @@ const docit = {
   PROJECT_PATH,
   VERSIONS_PATH,
   CONFIG_PATH,
-  saveConfig,
+  saveConfigFile,
+  saveVersionsFile,
   assertCurrentWorkingAlias,
   assertNoCurrentWorkingAlias,
   assertProjectAlreadyExists,

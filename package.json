@@ -1,17 +1,22 @@
 {
-  "name": "video-app",
+  "name": "docit",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "global": "npm install -g ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "commander": "^7.0.0",
     "fs-extra": "^9.0.1",
-    "hasha": "^5.2.2",
-    "mammoth": "^1.4.15"
+    "hasha": "^5.2.2"
+  },
+
+  "bin": {
+    "docit": "cli.js"
   }
 }

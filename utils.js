@@ -1,9 +1,10 @@
 const path = require("path");
 const fse = require("fs-extra");
+// const zlib = require("zlib");
 
 function assertIsValidDocumentPath(filepath) {
   let ext = path.extname(filepath);
-  if (ext !== ".docx" || ext !== ".doc") {
+  if (ext !== ".docx" && ext !== ".doc") {
     throw new Error("Docit: not a valid file")
   }
 }
@@ -22,13 +23,14 @@ function getFileName(path) {
   return path.basename(path, extension)
 }
 
-function decompressFile(path) {
-  // TODO
-}
+// function decompressBuffer(buffer) {
+  
+//   return zlib
+// }
 
-function compressFile(path) {
-  // TODO
-}
+// function compressBuffer(path) {
+//   // TODO
+// }
 
 
 
