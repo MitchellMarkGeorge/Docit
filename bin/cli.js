@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 const program = require("commander");
-const { version } = require("./package.json");
-const main = require("./index");
+const { version } = require("../package.json");
+const docit = require("../lib/index");
 
 program.version(version).name("docit");
+
 
 program
   .command("init <path>")
@@ -13,7 +14,7 @@ program
   })
   .option("-a, --alias <alias>", "alias of project")
   .action((path, { alias }) => {
-    main.init(path, alias);
+    docit.init(path, alias);
   });
 
 program
@@ -22,7 +23,7 @@ program
     alias: "alias of wanted project",
   })
   .action((alias) => {
-    main.open(alias);
+    docit.open(alias);
   });
 
 program
@@ -31,7 +32,7 @@ program
   .description("creates a new version of the word document and saves it")
   .option("-c, --comments <comments>", "the comment for the version", "")
   .action(({ comments }) => {
-    main.new_version(comments);
+    docit.new_version(comments);
   });
 
 program
@@ -41,14 +42,14 @@ program
     version: "version of the word docu",
   })
   .action((version) => {
-    main.rollback(version);
+    docit.rollback(version);
   });
 
 program
   .command("list-version")
   .description("list all the versions of a project")
   .action(() => {
-    main.list_versions();
+    docit.list_versions();
   });
 
 program
@@ -60,7 +61,14 @@ program
     }
   )
   .action((version) => {
-    main.peek(version);
+    docit.peek(version);
+  });
+
+program
+  .command("close")
+  .description("closes the current working project")
+  .action(() => {
+    docit.close();
   });
 
 program
@@ -69,7 +77,7 @@ program
     newpath: "new path for the word document",
   })
   .action((newpath) => {
-    main.move(newpath);
+    docit.move(newpath);
   });
 
 program.parse(process.argv);
