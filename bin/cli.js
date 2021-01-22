@@ -9,6 +9,7 @@ program.version(version).name("docit");
 
 program
   .command("init <path>")
+  .alias("i")
   .description("initalize project for given document", {
     path: "path of document",
   })
@@ -28,6 +29,7 @@ program
 
 program
   .command("new-version")
+  .alias("nv")
   .alias("snapshot")
   .description("creates a new version of the word document and saves it")
   .option("-c, --comments <comments>", "the comment for the version", "")
@@ -37,9 +39,10 @@ program
 
 program
   .command("rollback <version>")
+  .alias("rb")
   .alias("restore")
   .description("rollsback to certain version", {
-    version: "version of the word docu",
+    version: "version of the word document you want to rollback to",
   })
   .action((version) => {
     docit.rollback(version);
@@ -47,10 +50,28 @@ program
 
 program
   .command("list-version")
+  .alias("lv")
   .description("list all the versions of a project")
   .action(() => {
     docit.list_versions();
   });
+
+  program
+  .command("list-projects")
+  .alias("lp")
+  .description("list all the projects")
+  .action(() => {
+    docit.list_projects();
+  });
+
+  
+program
+.command("status")
+.alias("info")
+.description("get information of the current project timeline")
+.action(() => {
+  docit.status();
+});
 
 program
   .command("peek <version>")
