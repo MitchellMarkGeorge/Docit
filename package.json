@@ -1,6 +1,6 @@
 {
   "name": "@mitchellmg/docit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Version Control System for Work Documents (based on/ inspired by Git)",
   "main": "lib/index.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "public-publish": "npm publish --access public"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/MitchellMarkGeorge/Docit.git"
+    "type": "git",
+    "url": "https://github.com/MitchellMarkGeorge/Docit.git"
   },
   "engines": {
     "node": ">=11.7.0"
