@@ -1,5 +1,5 @@
 {
-  "name": "docit",
+  "name": "@mitchellmg/docit",
   "version": "1.0.0",
   "description": "A Version Control System for Work Documents (based on/ inspired by Git)",
   "main": "lib/index.js",

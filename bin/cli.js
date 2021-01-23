@@ -6,7 +6,7 @@ const docix = require("../lib/index");
 const Table = require("cli-table");
 const printUtils = require("../lib/printUtils");
 
-program.version(version).name(name);
+program.version(version).name('docit');
 // spinners?
 
 program
