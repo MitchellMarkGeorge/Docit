@@ -20,5 +20,3 @@ To use the CLI globally, run ``npm install @mitchellmg/docit -g`` and type ``doc
 ## Local Installation
 
 To run, simply clone this repo, run ``npm install`` and ``npm run global``. After that, simply type ``docit`` in your terminal and the help will guide you.
-
-I am work
