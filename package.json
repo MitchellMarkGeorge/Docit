@@ -7,6 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "global": "npm install -g ."
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/MitchellMarkGeorge/Docit.git"
+  },
+  "engines": {
+    "node": ">=11.7.0"
+  },
+  "types": "index.d.ts",
   "author": "Mitchell Mark-George <mitchellmmarkgeorge@gmail.com>",
   "license": "ISC",
   "dependencies": {
@@ -17,7 +25,6 @@
     "fs-extra": "^9.0.1",
     "hasha": "^5.2.2",
     "log-symbols": "^4.0.0",
-    "node-localstorage": "^2.1.6",
     "ora": "^5.2.0"
   },
   "bin": {
