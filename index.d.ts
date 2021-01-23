@@ -9,7 +9,7 @@ declare module docit {
   function close(): void;
   function status(): ProjectConfig; // should retun something {}
   function list_projects(): string[];
-  function isInProject(): boolean
+  function is_in_project(): boolean
   function make_file(path: string): void
 }
 
