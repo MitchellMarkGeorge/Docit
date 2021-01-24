@@ -11,6 +11,7 @@ declare module docit {
   function list_projects(): string[];
   function is_in_project(): boolean
   function make_file(path: string): void
+  function get_current_alias(): string | undefined
 }
 
 interface ProjectConfig {
